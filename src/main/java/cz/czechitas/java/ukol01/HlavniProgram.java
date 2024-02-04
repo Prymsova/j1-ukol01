@@ -1,6 +1,7 @@
 package cz.czechitas.java.ukol01;
 
 import cz.czechitas.java.ukol01.engine.Turtle;
+import java.lang.Math;
 
 public class HlavniProgram {
   private Turtle zofka;
@@ -14,7 +15,26 @@ public class HlavniProgram {
 
     //TODO implementace domácího úkolu
 
+    if (zofka.isPenDrawing()) {
+      zofka.penUp();
+    }
     nakresliPrasatko();
+
+    zofka.move(150);
+
+    nakresliMnohouhelnik(8);
+
+    zofka.turnRight(90);
+    zofka.move(150);
+    zofka.turnLeft(90);
+
+    nakresliMnohouhelnik(60);
+
+    zofka.turnRight(90);
+    zofka.move(170);
+    zofka.turnLeft(90);
+
+    nakresliSlunicko(60);
   }
 
   public void nakresliPrasatko() {
@@ -40,6 +60,7 @@ public class HlavniProgram {
     nakresliCumak();
 
     zofka.move(130);
+    zofka.penUp();
   }
 
   public void nakresliNohy() {
@@ -70,4 +91,56 @@ public class HlavniProgram {
     zofka.turnLeft(120);
   }
 
+  public void nakresliMnohouhelnik(double pocetStran) {
+    final double polomer = 50;
+    double uhelRadiany = Math.PI / pocetStran;
+    double uhelStupne = uhelRadiany * 360 / Math.PI;
+    double delkaStrany = 2 * polomer * Math.tan(uhelRadiany);
+
+    zofka.penDown();
+
+    for (int i = 0; i < pocetStran; i++) {
+      double turnUhelStupne = 90 + i * uhelStupne;
+      zofka.turnRight(turnUhelStupne);
+      zofka.move(delkaStrany);
+      zofka.turnLeft(turnUhelStupne);
+    }
+
+    zofka.penUp();
+  }
+
+  public void nakresliSlunicko(double pocetStran) {
+    final double polomer = 50;
+    double uhelRadiany = Math.PI / pocetStran;
+    double uhelStupne = uhelRadiany * 360 / Math.PI;
+    double delkaStrany = 2 * polomer * Math.tan(uhelRadiany);
+
+    double pocetCarek = 12;
+    double delitelnost = pocetStran / pocetCarek;
+
+    zofka.penDown();
+
+    for (int i = 0; i < pocetStran; i++) {
+      double turnUhelStupne = 90 + i * uhelStupne;
+      zofka.turnRight(turnUhelStupne);
+
+      if (i % delitelnost == 0) {
+        zofka.turnLeft(90);
+        nakresliCarku(20);
+        zofka.turnRight(90);
+      }
+
+      zofka.move(delkaStrany);
+      zofka.turnLeft(turnUhelStupne);
+    }
+
+    zofka.penUp();
+  }
+
+  public void nakresliCarku(double delka) {
+    zofka.move(delka);
+    zofka.turnRight(180);
+    zofka.move(delka);
+    zofka.turnRight(180);
+  }
 }
